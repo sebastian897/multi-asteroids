@@ -85,25 +85,25 @@ void Receive(){
         exit(1);
     } 
     bool found = false;
+    int slot = -1;
     for (int i = 0; i < MAX_PLAYERS; i++) {
-        if (!clients[i].active) continue;
-        printf("Should never get here\n");
+        if (!clients[i].active){
+            if (slot == -1){
+                slot = i;
+            }
+            continue;
+        }
         if (clients[i].addr.sin_addr.S_un.S_addr == cl.sin_addr.S_un.S_addr &&
             clients[i].addr.sin_port == cl.sin_port) {
             found=true;
             break;
         }
     }
-    if (!found){
-        for (int i = 0; i < MAX_PLAYERS; i++) {
-            if (clients[i].active) continue;
-
-            clients[i].addr.sin_addr.S_un.S_addr = cl.sin_addr.S_un.S_addr;
-            clients[i].addr.sin_port = cl.sin_port;
-            clients[i].addr.sin_family = cl.sin_family;
-            clients[i].active = true;
-            break;
-        }
+    if (!found && slot != -1){
+        clients[slot].addr.sin_addr.S_un.S_addr = cl.sin_addr.S_un.S_addr;
+        clients[slot].addr.sin_port = cl.sin_port;
+        clients[slot].addr.sin_family = cl.sin_family;
+        clients[slot].active = true;
     }
     buf[recv_len] = '\0';
     printf("Server: Received packet from %s:%d\n", inet_ntoa(cl.sin_addr), ntohs(cl.sin_port));

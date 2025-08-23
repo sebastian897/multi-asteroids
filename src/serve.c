@@ -10,16 +10,18 @@
 
 int main() {
     ServerInit();
-    Receive();
     SetRandomSeed(time(0));
     Vector2 pos = {0.0,0.0};
     Vector2 vel = {0.0,0.0};
-    Asteroid asteroid = CreateAsteroid(pos,vel,ASTEROID_SMALL);
-    printf("Server: sending asteroid\n");
-    PrintAsteroid(&asteroid);
+    Asteroid asteroid = CreateAsteroid(pos,vel,ASTEROID_SMALL);    
+    while (true){
+        Receive();
+        printf("Server: sending asteroid\n");
+        PrintAsteroid(&asteroid);
 
-    char buf[BUFSIZE];
-    memcpy(buf, &asteroid, sizeof(asteroid));
-    Broadcast(buf, sizeof(asteroid));
-    ServerShutdown();
+        char buf[BUFSIZE];
+        memcpy(buf, &asteroid, sizeof(asteroid));
+        Broadcast(buf, sizeof(asteroid));
+    }
+    ServerShutdown();    
 }

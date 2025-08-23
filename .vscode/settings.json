@@ -25,6 +25,7 @@
 		"player.h": "c",
 		"time.h": "c",
 		"game_ui.h": "c",
-		"game.h": "c"
+		"game.h": "c",
+		"stdlib.h": "c"
 	}
 }
