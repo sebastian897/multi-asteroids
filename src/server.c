@@ -73,17 +73,7 @@ void Broadcast(const char* buf, int size){
     }
 }
 
-void Receive(){
-    // Receive a packet
-    struct sockaddr_in cl;
-    int recv_len = recvfrom(sock, buf, BUFLEN-1, 0, (struct sockaddr*)&cl, &slen);
-    if (recv_len == SOCKET_ERROR) {
-
-        printf("Server: recvfrom() failed: %d\n", WSAGetLastError());
-        closesocket(sock);
-        WSACleanup();
-        exit(1);
-    } 
+void RecordClient(struct sockaddr_in* cl,int recv_len){
     bool found = false;
     int slot = -1;
     for (int i = 0; i < MAX_PLAYERS; i++) {
@@ -93,19 +83,77 @@ void Receive(){
             }
             continue;
         }
-        if (clients[i].addr.sin_addr.S_un.S_addr == cl.sin_addr.S_un.S_addr &&
-            clients[i].addr.sin_port == cl.sin_port) {
+        if (clients[i].addr.sin_addr.S_un.S_addr == cl->sin_addr.S_un.S_addr &&
+            clients[i].addr.sin_port == cl->sin_port) {
             found=true;
             break;
         }
     }
     if (!found && slot != -1){
-        clients[slot].addr.sin_addr.S_un.S_addr = cl.sin_addr.S_un.S_addr;
-        clients[slot].addr.sin_port = cl.sin_port;
-        clients[slot].addr.sin_family = cl.sin_family;
+        clients[slot].addr.sin_addr.S_un.S_addr = cl->sin_addr.S_un.S_addr;
+        clients[slot].addr.sin_port = cl->sin_port;
+        clients[slot].addr.sin_family = cl->sin_family;
         clients[slot].active = true;
     }
     buf[recv_len] = '\0';
-    printf("Server: Received packet from %s:%d\n", inet_ntoa(cl.sin_addr), ntohs(cl.sin_port));
+    printf("Server: Received packet from %s:%d\n", inet_ntoa(cl->sin_addr), ntohs(cl->sin_port));
     printf("Server: Data: %s\n", buf);
+}
+
+void Receive(){
+    struct sockaddr_in cl;
+    // Receive a packet
+    int recv_len = recvfrom(sock, buf, BUFLEN-1, 0, (struct sockaddr*)&cl, &slen);
+    if (recv_len == SOCKET_ERROR) {
+
+        printf("1Server: recvfrom() failed: %d\n", WSAGetLastError());
+        closesocket(sock);
+        WSACleanup();
+        exit(1);
+    } 
+    RecordClient(&cl, recv_len);
+}
+
+int ReceiveMultiple(){
+    #define SILENCE_TIMEOUT_MS 10
+    int ret;        
+    struct sockaddr_in cl;
+    int packets = 0;
+    fd_set readfds;
+    FD_ZERO(&readfds);
+    FD_SET(sock, &readfds);
+
+    // Set timeout
+    struct timeval timeout;
+    timeout.tv_sec = 0;
+    timeout.tv_usec = SILENCE_TIMEOUT_MS * 1000;  // convert ms to µs   
+
+    // Collect packets until no activity for SILENCE_TIMEOUT_MS
+    while (1) {
+
+
+        ret = select(0, &readfds, NULL, NULL, &timeout);
+        printf("ret = %d)\n", ret);
+        if (ret == SOCKET_ERROR) {
+            printf("select() failed: %d\n", WSAGetLastError());
+            break;
+        } else if (ret == 0) {
+            // No data received in timeout
+            printf("Silence timeout reached (%d ms)\n", SILENCE_TIMEOUT_MS);
+            return packets;
+        }
+
+        if (FD_ISSET(sock, &readfds)) {
+            int bytesReceived = recvfrom(sock, buf, BUFLEN-1, 0, (struct sockaddr*)&cl, &slen);
+            if (bytesReceived == SOCKET_ERROR) {
+                printf("2Server: recvfrom() failed: %d\n", WSAGetLastError());
+                closesocket(sock);
+                WSACleanup();
+                exit(1);
+            } 
+            RecordClient(&cl, bytesReceived);
+            packets++;
+        }
+    }
+    return packets;
 }

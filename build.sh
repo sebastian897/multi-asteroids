@@ -1,7 +1,6 @@
 function run() {
     ./server &
-    sleep 1
-    ./client
+    ./client &
     ./client
 }
 
