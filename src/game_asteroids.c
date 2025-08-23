@@ -6,7 +6,7 @@
 #include "debug.h"
 
 static AsteroidSize _sizes[] = { ASTEROID_SMALL, ASTEROID_MEDIUM, ASTEROID_LARGE };
-static Asteroid _asteroids[ASTEROID_MAX] = {0};
+Asteroid _asteroids[ASTEROID_MAX] = {0};
 static float _lastAsteroidCreationTime = -1.0f;
 static float _newAsteroidsBaseAngle = 0;
 

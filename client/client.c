@@ -54,7 +54,7 @@ void ClientReceive(){
     } 
     
     buf[recv_len] = '\0';
-    printf("Client: Server reply: %s\n", buf);
+    // printf("Client: Server reply: %s\n", buf);
 }
 
 void ClientShutdown(){

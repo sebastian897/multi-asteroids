@@ -1,5 +1,4 @@
 #include "server.h"
-#include "netif.h"
 #include <string.h>
 #include <stdio.h>
 #include <time.h>

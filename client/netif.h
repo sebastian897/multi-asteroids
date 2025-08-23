@@ -1,3 +1,3 @@
-#include "asteroid.h"
+#include "../src/asteroid.h"
 
 void PrintAsteroid(const Asteroid* asteroid);

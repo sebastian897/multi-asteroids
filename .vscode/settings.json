@@ -26,6 +26,9 @@
 		"time.h": "c",
 		"game_ui.h": "c",
 		"game.h": "c",
-		"stdlib.h": "c"
+		"stdlib.h": "c",
+		"string.h": "c",
+		"client.h": "c",
+		"netif.h": "c"
 	}
 }

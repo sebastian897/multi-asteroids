@@ -223,7 +223,7 @@ endif
 
 ifeq ($(PLATFORM),PLATFORM_DESKTOP)
     ifeq ($(PLATFORM_OS),WINDOWS)
-        LDLIBS = -lraylib -lopengl32 -lgdi32 -lwinmm
+        LDLIBS = -lraylib -lopengl32 -lgdi32 -lwinmm -lws2_32
         # Required for physac examples
         #LDLIBS += -static -lpthread
     endif
