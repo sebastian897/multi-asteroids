@@ -12,4 +12,6 @@
 #define ASTEROID_SPLIT_ANGLE 80 * DEG2RAD
 #define ASTEROID_DELAY 2.25f
 
+#define PLAYERS_MAX 16
+
 #endif

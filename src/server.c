@@ -1,19 +1,20 @@
+#include <stdlib.h>
 #include <stdio.h>
 #include <winsock2.h>
 #include <Ws2tcpip.h>
 #include <stdbool.h>
+#include "constants.h"
 
 #define PORT 5150
-#define BUFLEN 512
+#define BUFLEN 511
 
-#define MAX_PLAYERS 16
 
 typedef struct client{
     struct sockaddr_in addr;
     bool active;
 } client;
 
-static client clients[MAX_PLAYERS] = {0};
+static client clients[PLAYERS_MAX] = {0};
 static SOCKET sock;
 static int slen = sizeof(struct sockaddr_in);
 
@@ -63,8 +64,9 @@ void ServerShutdown(){
 }
 
 void Broadcast(const char* buf, int size){
-    for (int i = 0; i < MAX_PLAYERS; i++) {
+    for (signed char i = 0; i < PLAYERS_MAX; i++) {
         if (!clients[i].active) continue;
+        memcpy(buf, &i, 1);
         if (sendto(sock, buf, size, 0, (struct sockaddr*)&clients[i].addr, slen) == SOCKET_ERROR) {
             printf("Server: sendto() failed: %d\n", WSAGetLastError());
         } else {
@@ -76,7 +78,7 @@ void Broadcast(const char* buf, int size){
 void RecordClient(struct sockaddr_in* cl,int recv_len){
     bool found = false;
     int slot = -1;
-    for (int i = 0; i < MAX_PLAYERS; i++) {
+    for (int i = 0; i < PLAYERS_MAX; i++) {
         if (!clients[i].active){
             if (slot == -1){
                 slot = i;

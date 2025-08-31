@@ -20,16 +20,17 @@ int main(){
 	ServerInit();
     SetRandomSeed(time(0));
 
-	InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Raylib Asteroids by Andrew Hamel");
+	InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Server");
 
 	InitGame();
+	_playerId = -2;
 
 	while(!WindowShouldClose() && !_quitGame)
 	{
 		UpdateDrawFrame();
-		int packets = ReceiveMultiple();
+		ReceiveMultiple();
         char buf[BUFSIZE];
-        memcpy(buf, &_asteroids, sizeof(Asteroid)*ASTEROID_MAX);
+        memcpy(buf+1, &_asteroids, sizeof(Asteroid)*ASTEROID_MAX);
 		int count = 0;
         for (int i = 0; i < ASTEROID_MAX; i++){
             if (_asteroids[i].active){
@@ -52,9 +53,9 @@ void UpdateDrawFrame(void)
 
 	BeginDrawing();
 
-		ClearBackground(NEARBLACK);
+	ClearBackground(NEARBLACK);
 
-		DrawGame();
+	DrawGame();
 
 	EndDrawing();
 }

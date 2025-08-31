@@ -21,10 +21,12 @@ typedef struct Player
 	float timeStateEntered;
 	float rotation;
 	float lastFireTime;
+	int health;
+	bool active;
 } Player;
 
-void PlayerMove(Player* player);
-void PlayerDraw(Player player, Texture2D texture);
+void PlayerMove(Player* player, int id);
+void PlayerDraw(Player* player, Texture2D texture);
 Vector2 PlayerFacingDirection(Player player);
 void PlayerSetState(Player* player, PlayerState state);
 

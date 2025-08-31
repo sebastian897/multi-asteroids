@@ -12,6 +12,7 @@
 
 static int _activeAsteroids = 0;
 static int _activeProjectiles = 0;
+signed char _playerId = -1;
 
 extern bool _quitGame;
 
@@ -33,7 +34,7 @@ static void SetState(GameState state)
 		
 	case GAME_PLAYING:
 		ResetAsteroids();
-		ResetPlayer();
+		ResetPlayers();
 		ResetProjectiles();
 		ResetScore();
 		break;
@@ -50,14 +51,14 @@ static void SetState(GameState state)
 
 void InitGame(void)
 {
-	InitPlayer();
+	InitPlayers();
 }
 
 void UpdateGame(void)
 {
 	_activeAsteroids = UpdateAsteroids();
 	_activeProjectiles = UpdateProjectiles();
-	UpdatePlayer();
+	UpdatePlayers();
 }
 
 void DrawGame(void)
@@ -86,7 +87,7 @@ void DrawGame(void)
 	case GAME_PLAYING:
 		DrawAsteroids();
 		DrawProjectiles();
-		DrawPlayer();
+		DrawPlayers();
 		DrawScore();
 		DrawHealth();
 		ShowDebugVisualizations(_activeAsteroids, _activeProjectiles);

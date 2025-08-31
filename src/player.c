@@ -2,6 +2,7 @@
 #include "raymath.h"
 #include "debug.h"
 #include "constants.h"
+#include "game.h"
 
 #define PLAYER_ROT_SPEED 360
 #define PLAYER_SPEED 250
@@ -14,20 +15,22 @@
 #define FIELD_MIN_Y (-PLAYER_RADIUS / 2)
 #define FIELD_MAX_Y (SCREEN_HEIGHT + PLAYER_RADIUS / 2)
 
-static void UpdateAngle(Player* player, float frametime)
+static void UpdateAngle(Player* player, int id, float frametime)
 {
-	int xIn = (int)IsKeyDown(KEY_RIGHT) - (int)IsKeyDown(KEY_LEFT);
-	player->rotation += (xIn * PLAYER_ROT_SPEED * frametime);
+	if (_playerId==id){
+		int xIn = (int)IsKeyDown(KEY_RIGHT) - (int)IsKeyDown(KEY_LEFT);
+		player->rotation += (xIn * PLAYER_ROT_SPEED * frametime);
+	}
 }
 
-static void UpdateVelocity(Player* player, float frametime)
+static void UpdateVelocity(Player* player, int id, float frametime)
 {
-	int yIn = (int)IsKeyDown(KEY_UP) - (int)IsKeyDown(KEY_DOWN);
 	float magSqr = Vector2LengthSqr(player->velocity);
 	float mag = sqrt(magSqr);
 	Vector2 facingDirection = PlayerFacingDirection(*player);
-	if (yIn > 0)
-	{
+
+	int yIn = (int)IsKeyDown(KEY_UP) - (int)IsKeyDown(KEY_DOWN);
+	if (yIn > 0 && _playerId==id){
 		player->velocity = Vector2Add(player->velocity,
 			Vector2Scale(facingDirection, PLAYER_ACCELERATION * frametime));
 		if (mag > PLAYER_SPEED)
@@ -100,14 +103,14 @@ static void UpdateWrap(Player* player, float frametime)
 	}
 }
 
-void PlayerMove(Player* player)
+void PlayerMove(Player* player, int id)
 {
 	float frametime = GetFrameTime();
 
 	if (player->state != PLAYER_STUNNED && player->state != PLAYER_DEAD)
 	{
-		UpdateAngle(player, frametime);
-		UpdateVelocity(player, frametime);
+		UpdateAngle(player, id, frametime);
+		UpdateVelocity(player, id, frametime);
 	}
 
 	player->position = Vector2Add(player->position, Vector2Scale(player->velocity, frametime));
@@ -116,21 +119,22 @@ void PlayerMove(Player* player)
 	SetPlayerInfo(player->position, player->velocity, player->rotation);
 }
 
-void PlayerDraw(Player player, Texture2D texture)
+void PlayerDraw(Player* player, Texture2D texture)
 {
-	if (player.state == PLAYER_DEAD)
+
+	if (player->state == PLAYER_DEAD)
 	{
 		return;
 	}
 
 	const Rectangle source = {0, 0, 32, 32};
-	Rectangle dest = {player.position.x, player.position.y, PLAYER_RADIUS * 2, PLAYER_RADIUS * 2};
+	Rectangle dest = {player->position.x, player->position.y, PLAYER_RADIUS * 2, PLAYER_RADIUS * 2};
 	Vector2 origin = {dest.width / 2, dest.height / 2};
 
 	Color color = WHITE;
-	if (player.state == PLAYER_IFRAME)
+	if (player->state == PLAYER_IFRAME)
 	{
-		float seconds = GetTime() - player.timeStateEntered;
+		float seconds = GetTime() - player->timeStateEntered;
 		int value = (int)(seconds * 6.0f);
 		if (value % 2)
 		{
@@ -138,7 +142,7 @@ void PlayerDraw(Player player, Texture2D texture)
 		}
 	}
 
-	DrawTexturePro(texture, source, dest, origin, player.rotation, color);
+	DrawTexturePro(texture, source, dest, origin, player->rotation, color);
 }
 
 Vector2 PlayerFacingDirection(Player player)

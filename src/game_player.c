@@ -1,152 +1,154 @@
 #include "game_player.h"
 #include "game.h"
-#include "constants.h"
 #include "game_asteroids.h"
 #include "game_projectiles.h"
 
 #include "raymath.h"
 
-static Player _player;
+Player _players[PLAYERS_MAX] = {0};
 static Texture2D _texturePlayer;
-static int _health = PLAYER_HEALTH_MAX;
 
-void InitPlayer(void)
-{
-	ResetPlayer();
+void InitPlayers(void){
+	ResetPlayers();
 	_texturePlayer = LoadTexture("resources/ship.png");
 }
 
-void ResetPlayer(void)
+void ResetPlayers(void)
 {
-	_player = (Player){
-		.position = SCREEN_CENTER,
-		.velocity = (Vector2){0},
-		.rotation = 0,
-		.lastFireTime = -1.0f,
-		.state = PLAYER_DEFAULT
-	};
-
-	_health = PLAYER_HEALTH_MAX;
+	for(int i = 0; i < PLAYERS_MAX; i++){
+		ResetPlayer(&_players[i]);
+	}
 }
 
-void DrawPlayer(void)
+void ResetPlayer(Player* player)
 {
-	PlayerDraw(_player, _texturePlayer);
+	player->position = SCREEN_CENTER;
+	player->velocity = (Vector2){0};
+	player->rotation = 0;
+	player->lastFireTime = -1.0f;
+	player->state = PLAYER_DEFAULT;
+	player->health = PLAYER_HEALTH_MAX;
+	player->active = false;
 }
 
-static void OnDeath(void)
+void DrawPlayers(void)
 {
-	PlayerSetState(&_player, PLAYER_DEAD);
+	for(int i = 0; i < PLAYERS_MAX; i++){
+		PlayerDraw(&_players[i], _texturePlayer);
+	}
 }
 
-static void OnCollision(Asteroid* asteroid)
+static void OnDeath(Player* player)
+{
+	PlayerSetState(player, PLAYER_DEAD);
+}
+
+static void OnCollision(Player* player, Asteroid* asteroid)
 {
 	const float playerNudgeMagnitude = 200.0f;
 	const float asteroidSpeedReduction = 0.4f;
 
-	_health--;
-	if (_health <= 0)
+	player->health--;
+	if (player->health <= 0)
 	{
-		OnDeath();
+		OnDeath(player);
 		return;
 	}
 
-	PlayerSetState(&_player, PLAYER_STUNNED);
+	PlayerSetState(player, PLAYER_STUNNED);
 
-	Vector2 nudgeDirection = Vector2Normalize(Vector2Subtract(_player.position, asteroid->position));
-	_player.velocity = Vector2Scale(nudgeDirection, playerNudgeMagnitude);
+	Vector2 nudgeDirection = Vector2Normalize(Vector2Subtract(player->position, asteroid->position));
+	player->velocity = Vector2Scale(nudgeDirection, playerNudgeMagnitude);
 
 	asteroid->velocity = Vector2Scale(asteroid->velocity, asteroidSpeedReduction);
 }
 
-static void TickState(void)
+static void TickState(Player* player)
 {
 	const float stunDuration = 0.2f;
 	const float iframeDuration = 0.8f;
 	const float playerDeathDelay = 0.8f;
 
-	switch (_player.state)
+	switch (player->state)
 	{
 	case PLAYER_DEFAULT:
 		// no check
 		break;
 		
 	case PLAYER_STUNNED:
-		if ((GetTime() - _player.timeStateEntered) > stunDuration)
+		if ((GetTime() - player->timeStateEntered) > stunDuration)
 		{
-			PlayerSetState(&_player, PLAYER_IFRAME);
+			PlayerSetState(player, PLAYER_IFRAME);
 		}
 		break;
 		
 	case PLAYER_IFRAME:
-		if ((GetTime() - _player.timeStateEntered) > iframeDuration)
+		if ((GetTime() - player->timeStateEntered) > iframeDuration)
 		{
-			PlayerSetState(&_player, PLAYER_DEFAULT);
+			PlayerSetState(player, PLAYER_DEFAULT);
 		}
 		break;
 		
 	case PLAYER_DEAD:
-		if ((GetTime() - _player.timeStateEntered) > playerDeathDelay)
+		if ((GetTime() - player->timeStateEntered) > playerDeathDelay)
 		{
 			GameOver();
 		}
 		break;
 
 	default:
-		TraceLog(LOG_ERROR, "PlayerState %d not handled!", (int)_player.state);
+		TraceLog(LOG_ERROR, "PlayerState %d not handled!", (int)player->state);
 		break;
 	}
 }
 
-void UpdatePlayer(void)
-{
-	TickState();
-	PlayerMove(&_player);
+void UpdatePlayers(void){
+	for(int i = 0; i < PLAYERS_MAX; i++){
+		if (!_players[i].active){continue;}
 
-	if (_player.state == PLAYER_STUNNED)
-	{
-		return;
-	}
-	
-	float time = GetTime();
-	if (IsKeyDown(KEY_SPACE))
-	{
-		if (time > _player.lastFireTime + PLAYER_FIRE_DELAY)
+		TickState(&_players[i]);
+		PlayerMove(&_players[i], i);
+
+		if (_players[i].state == PLAYER_STUNNED)
 		{
-			AddProjectile(Vector2Add(_player.position, Vector2Scale(PlayerFacingDirection(_player), PLAYER_PROJECTILE_OFFSET)), _player.rotation);
-			_player.lastFireTime = time;
+			return;
 		}
-	}
-
-	if (_player.state == PLAYER_IFRAME)
-	{
-		return;
-	}
-
-	Asteroid* asteroids = AsteroidsArray();
-	const int count = ASTEROID_MAX;
-
-	for (int i = 0; i < count; i++)
-	{
-		Asteroid* asteroid = asteroids + i;
-
-		if (!asteroid->active)
+		
+		float time = GetTime();
+		if (IsKeyDown(KEY_SPACE))
 		{
-			continue;
+			if (time > _players[i].lastFireTime + PLAYER_FIRE_DELAY)
+			{
+				AddProjectile(Vector2Add(_players[i].position, Vector2Scale(PlayerFacingDirection(_players[i]), PLAYER_PROJECTILE_OFFSET)), _players[i].rotation);
+				_players[i].lastFireTime = time;
+			}
 		}
 
-		if (!CheckCollisionCircles(_player.position, PLAYER_RADIUS,
-			asteroid->position, AsteroidRadius(*asteroid)))
+		if (_players[i].state == PLAYER_IFRAME)
 		{
-			continue;
+			return;
 		}
 
-		OnCollision(asteroid);
-		break;
-	}
-}
+		Asteroid* asteroids = AsteroidsArray();
+		const int count = ASTEROID_MAX;
 
-int PlayerHealth(void)
-{
-	return _health;
+		for (int i = 0; i < count; i++)
+		{
+			Asteroid* asteroid = asteroids + i;
+
+			if (!asteroid->active)
+			{
+				continue;
+			}
+
+			if (!CheckCollisionCircles(_players[i].position, PLAYER_RADIUS,
+				asteroid->position, AsteroidRadius(*asteroid)))
+			{
+				continue;
+			}
+
+			OnCollision(&_players[i], asteroid);
+			break;
+		}
+	}
 }

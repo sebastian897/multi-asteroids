@@ -14,7 +14,7 @@ void DrawHealth(void)
 	const float cellWidth = (barWidth + cellGap - (lineThick * 2)) / PLAYER_HEALTH_MAX;
 	const float cellHeight = 48;
 
-	int health = PlayerHealth();
+	int health = 5;
 
 	Rectangle r = (Rectangle){ (SCREEN_WIDTH * 0.5f) - (barWidth * 0.5f), SCREEN_HEIGHT - cellWidth * 1.5f, barWidth, cellHeight };
 	DrawRectangleRounded(r, 0.25f, 8, BLACK);
