@@ -9,6 +9,7 @@
 #include "server.h"
 #include <string.h>
 #include <stdio.h>
+#include "game_player.h"
 
 void UpdateDrawFrame(void);
 
@@ -30,15 +31,17 @@ int main(){
 		UpdateDrawFrame();
 		ReceiveMultiple();
         char buf[BUFSIZE];
-        memcpy(buf+1, &_asteroids, sizeof(Asteroid)*ASTEROID_MAX);
+        memcpy(buf+sizeof(unsigned char), &_asteroids, sizeof(Asteroid)*ASTEROID_MAX);
+        memcpy(buf+sizeof(unsigned char)+sizeof(Asteroid)*ASTEROID_MAX, &_players, sizeof(Player)*PLAYERS_MAX);
 		int count = 0;
         for (int i = 0; i < ASTEROID_MAX; i++){
             if (_asteroids[i].active){
                 count++;
             }
         }
+		
         printf("Server: Number of asteroids sent: %d", count);
-        Broadcast(buf, sizeof(Asteroid)*ASTEROID_MAX);
+        Broadcast(buf, sizeof(unsigned char)+sizeof(Asteroid)*ASTEROID_MAX+sizeof(Player)*PLAYERS_MAX);
 	}
 	
 	CloseWindow();

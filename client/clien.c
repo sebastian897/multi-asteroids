@@ -44,7 +44,8 @@ int main(){
         ClientReceive();
         memcpy(&_playerId, buf, 1);
         _players[_playerId].active = 1;
-        memcpy(&_asteroids, buf+1, sizeof(Asteroid)*ASTEROID_MAX);
+        memcpy(&_asteroids, buf+sizeof(unsigned char), sizeof(Asteroid)*ASTEROID_MAX);
+        memcpy(&_players, buf+sizeof(unsigned char)+sizeof(Asteroid)*ASTEROID_MAX, sizeof(Player)*PLAYERS_MAX);
         int count = 0;
         for (int i = 0; i < ASTEROID_MAX; i++){
             if (_asteroids[i].active){
