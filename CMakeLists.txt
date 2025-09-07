@@ -2,8 +2,6 @@ cmake_minimum_required(VERSION 3.28)
 project(multi-asteroid)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-set(CMAKE_POST_CONFIGURE_SCRIPT "${CMAKE_SOURCE_DIR}/cmake/CopyCompileCommands.cmake")
-
 set(CMAKE_C_STANDARD_REQUIRED ON)
 
 include(FetchContent)
@@ -79,3 +77,9 @@ target_compile_options(client PRIVATE
     $<$<C_COMPILER_ID:MSVC>:/W4>
 )
 
+add_custom_target(copy_compile_commands ALL
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        "${CMAKE_BINARY_DIR}/compile_commands.json"
+        "${CMAKE_SOURCE_DIR}/compile_commands.json"
+    COMMENT "Copying compile_commands.json to source root"
+)
