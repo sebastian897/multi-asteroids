@@ -5,6 +5,7 @@
 #include "raymath.h"
 
 Player _players[PLAYERS_MAX] = {0};
+PlayerInputs _inputs[PLAYERS_MAX] = {0};
 static Texture2D _texturePlayer;
 
 void InitPlayers(void){
@@ -106,7 +107,7 @@ void UpdatePlayers(void){
 		if (!_players[i].active){continue;}
 
 		TickState(&_players[i]);
-		PlayerMove(&_players[i], i);
+		PlayerMove(&_players[i], i, _inputs[i].thrust, _inputs[i].rotation);
 
 		if (_players[i].state == PLAYER_STUNNED)
 		{

@@ -106,7 +106,7 @@ void UpdatePlayers(void){
 		if (!_players[i].active){continue;}
 
 		TickState(&_players[i]);
-		PlayerMove(&_players[i], i);
+		PlayerMove(&_players[i], i, 0, 0);
 
 		if (_players[i].state == PLAYER_STUNNED)
 		{

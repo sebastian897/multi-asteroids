@@ -28,9 +28,13 @@ int main(){
 
 	while(!WindowShouldClose() && !_quitGame)
 	{
-		UpdateDrawFrame();
 		ReceiveMultiple();
-        char buf[BUFSIZE];
+
+		
+
+		UpdateDrawFrame();
+
+		char buf[BUFSIZE];
         memcpy(buf+sizeof(unsigned char), &_asteroids, sizeof(Asteroid)*ASTEROID_MAX);
         memcpy(buf+sizeof(unsigned char)+sizeof(Asteroid)*ASTEROID_MAX, &_players, sizeof(Player)*PLAYERS_MAX);
 		int count = 0;
@@ -39,7 +43,6 @@ int main(){
                 count++;
             }
         }
-		
         printf("Server: Number of asteroids sent: %d", count);
         Broadcast(buf, sizeof(unsigned char)+sizeof(Asteroid)*ASTEROID_MAX+sizeof(Player)*PLAYERS_MAX);
 	}

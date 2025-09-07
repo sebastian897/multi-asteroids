@@ -14,22 +14,25 @@
 #define FIELD_MIN_Y (-PLAYER_RADIUS / 2)
 #define FIELD_MAX_Y (SCREEN_HEIGHT + PLAYER_RADIUS / 2)
 
-static void UpdateAngle(Player* player, int id, float frametime)
+static void UpdateAngle(Player* player, int id, float frametime, signed char rotvel)
 {
 	// if (_playerId==id){
-		int xIn = (int)IsKeyDown(KEY_RIGHT) - (int)IsKeyDown(KEY_LEFT);
-		player->rotation += (xIn * PLAYER_ROT_SPEED * frametime);
+	// int xIn = (int)IsKeyDown(KEY_RIGHT) - (int)IsKeyDown(KEY_LEFT); use for client
+	// int xIn = (int)rotclk - (int)rotant;
+
+	player->rotation += (rotvel * PLAYER_ROT_SPEED * frametime);
 	// }
 }
 
-static void UpdateVelocity(Player* player, int id, float frametime)
+static void UpdateVelocity(Player* player, int id, float frametime, bool thrust)
 {
 	float magSqr = Vector2LengthSqr(player->velocity);
 	float mag = sqrt(magSqr);
 	Vector2 facingDirection = PlayerFacingDirection(*player);
 
-	int yIn = (int)IsKeyDown(KEY_UP) - (int)IsKeyDown(KEY_DOWN);
-	if (yIn > 0){
+	// int yIn = (int)IsKeyDown(KEY_UP) - (int)IsKeyDown(KEY_DOWN);
+
+	if (thrust){
 		player->velocity = Vector2Add(player->velocity,
 			Vector2Scale(facingDirection, PLAYER_ACCELERATION * frametime));
 		if (mag > PLAYER_SPEED)
@@ -102,14 +105,14 @@ static void UpdateWrap(Player* player, float frametime)
 	}
 }
 
-void PlayerMove(Player* player, int id)
+void PlayerMove(Player* player, int id, bool thrust, signed char rotvel)
 {
 	float frametime = GetFrameTime();
 
 	if (player->state != PLAYER_STUNNED && player->state != PLAYER_DEAD)
 	{
-		UpdateAngle(player, id, frametime);
-		UpdateVelocity(player, id, frametime);
+		UpdateAngle(player, id, frametime, rotvel);
+		UpdateVelocity(player, id, frametime, thrust);
 	}
 
 	player->position = Vector2Add(player->position, Vector2Scale(player->velocity, frametime));
