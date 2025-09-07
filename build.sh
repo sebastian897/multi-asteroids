@@ -32,9 +32,11 @@ gcc -c src/raygui.c -o svr_obj/raygui.o -Wall -std=c23 -D_DEFAULT_SOURCE -Wno-mi
     -I. -IC:/raylib/raylib/src -IC:/raylib/raylib/src/external -DPLATFORM_DESKTOP
 gcc -c server/server.c -o svr_obj/server.o -Wall -std=c23 -D_DEFAULT_SOURCE -Wno-missing-braces -s -O1\
     -I. -Isrc -IC:/raylib/raylib/src -IC:/raylib/raylib/src/external -DPLATFORM_DESKTOP
+gcc -c server/buffer_control.c -o svr_obj/buffer_control.o -Wall -std=c23 -D_DEFAULT_SOURCE -Wno-missing-braces -s -O1\
+    -I. -Isrc -IC:/raylib/raylib/src -IC:/raylib/raylib/src/external -DPLATFORM_DESKTOP
 gcc -o main.exe svr_obj/asteroid.o svr_obj/debug.o svr_obj/debug_cones.o svr_obj/game.o svr_obj/game_asteroids.o svr_obj/game_player.o \
   svr_obj/game_projectiles.o svr_obj/game_score.o svr_obj/game_ui.o svr_obj/main.o svr_obj/player.o svr_obj/projectile.o svr_obj/raygui.o\
-  svr_obj/server.o -Wall -std=c23 -D_DEFAULT_SOURCE -Wno-missing-braces -s -O1 -I. -IC:/raylib/raylib/src\
+  svr_obj/server.o svr_obj/buffer_control.o -Wall -std=c23 -D_DEFAULT_SOURCE -Wno-missing-braces -s -O1 -I. -IC:/raylib/raylib/src\
   -IC:/raylib/raylib/src/external -L. -LC:/raylib/raylib/src -LC:/raylib/raylib/src \
   C:/raylib/raylib/src/raylib.rc.data -Wl,--subsystem,windows -lraylib -lopengl32 -lgdi32 -lwinmm -lws2_32 \
   -DPLATFORM_DESKTOP

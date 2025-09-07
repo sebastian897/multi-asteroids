@@ -3,7 +3,8 @@
 #include <winsock2.h>
 #include <Ws2tcpip.h>
 #include <stdbool.h>
-#include "../src/constants.h"
+#include "constants.h"
+#include "buffer_control.h"
 
 #define PORT 5150
 #define BUFLEN 511
@@ -63,7 +64,7 @@ void ServerShutdown(){
     WSACleanup();
 }
 
-void Broadcast(const char* buf, int size){
+void Broadcast(char* buf, int size){
     for (signed char i = 0; i < PLAYERS_MAX; i++) {
         if (!clients[i].active) continue;
         memcpy(buf, &i, 1);
@@ -97,9 +98,7 @@ void RecordClient(struct sockaddr_in* cl,int recv_len){
         clients[slot].addr.sin_family = cl->sin_family;
         clients[slot].active = true;
     }
-    buf[recv_len] = '\0';
     printf("Server: Received packet from %s:%d\n", inet_ntoa(cl->sin_addr), ntohs(cl->sin_port));
-    printf("Server: Data: %s\n", buf);
 }
 
 void Receive(){
@@ -138,7 +137,7 @@ int ReceiveMultiple(){
         printf("ret = %d)\n", ret);
         if (ret == SOCKET_ERROR) {
             printf("select() failed: %d\n", WSAGetLastError());
-            break;
+            exit(1);
         } else if (ret == 0) {
             // No data received in timeout
             printf("Silence timeout reached (%d ms)\n", SILENCE_TIMEOUT_MS);
@@ -154,6 +153,7 @@ int ReceiveMultiple(){
                 exit(1);
             } 
             RecordClient(&cl, bytesReceived);
+            StoreInputs(buf);
             packets++;
         }
     }

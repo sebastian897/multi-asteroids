@@ -1542,7 +1542,7 @@ int GuiTabBar(Rectangle bounds, const char **text, int count, int *active)
 {
     #define RAYGUI_TABBAR_ITEM_WIDTH    160
 
-    GuiState state = guiState;
+    // GuiState state = guiState;
 
     int closing = -1;
     Rectangle tabBounds = { bounds.x, bounds.y, RAYGUI_TABBAR_ITEM_WIDTH, bounds.height };
@@ -3968,13 +3968,13 @@ const char **GetTextLines(const char *text, int *count)
     lines[0] = text;
     int len = 0;
     *count = 1;
-    int lineSize = 0;   // Stores current line size, not returned
+    // int lineSize = 0;   // Stores current line size, not returned
 
     for (int i = 0, k = 0; (i < textSize) && (*count < RAYGUI_MAX_TEXT_LINES); i++)
     {
         if (text[i] == '\n')
         {
-            lineSize = len;
+            // lineSize = len;
             k++;
             lines[k] = &text[i + 1];     // WARNING: next value is valid?
             len = 0;

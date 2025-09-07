@@ -49,13 +49,13 @@ int UpdateProjectiles(void)
 		{
 			projectileCount++;
 
-			bool hit = false;
+			// bool hit = false;
 			for (int j = 0; j < ASTEROID_MAX; j++)
 			{
 				Asteroid* asteroid = asteroids + j;
 				if (CheckCollisionProjectile(projectile, asteroid))
 				{
-					hit = true;
+					// hit = true;
 					DestroyAsteroid(j, projectile->rotation);
 					projectile->active = false;
 					// points earned?

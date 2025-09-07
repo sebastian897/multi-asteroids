@@ -32,6 +32,7 @@
 		"netif.h": "c",
 		"text_encoding": "c",
 		"winsock2.h": "c",
-		"server.h": "c"
+		"server.h": "c",
+		"stdbool.h": "c"
 	}
 }

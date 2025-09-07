@@ -15,5 +15,6 @@ void ResetPlayer(Player* player);
 void ResetPlayers(void);
 
 extern Player _players[PLAYERS_MAX];
+extern PlayerInputs _inputs[PLAYERS_MAX];
 
 #endif

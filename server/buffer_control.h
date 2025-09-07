@@ -1,0 +1,1 @@
+void StoreInputs(char* buf);

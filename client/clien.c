@@ -52,8 +52,16 @@ int main(){
                 count++;
             }
         }
+        bool thrust = IsKeyDown(KEY_UP);
+        signed char rotation = (int)IsKeyDown(KEY_RIGHT) - (int)IsKeyDown(KEY_LEFT);
+        memcpy(buf, &_playerId, 1);        
+        memcpy(buf+sizeof(_playerId), &thrust, sizeof(thrust));
+        memcpy(buf+sizeof(_playerId)+sizeof(thrust), &rotation, sizeof(rotation));
+        
+        printf("Client: inputs sending: %d %d %d\n", (signed char)buf[0], (bool)buf[1], (signed char)buf[2]);
+        Send(buf, sizeof(_playerId)+sizeof(thrust)+sizeof(rotation));
+
         // printf("Client: id = %d", _playerId);
-        printf("Client: Number of asteroids received: %d\n", count);
 		UpdateDrawFrame();
     }
     _players[_playerId].active = 0;

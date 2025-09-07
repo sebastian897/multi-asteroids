@@ -1,3 +1,5 @@
+#include <stdio.h>
+
 #include "game_player.h"
 #include "game_asteroids.h"
 #include "game_projectiles.h"
@@ -107,6 +109,7 @@ void UpdatePlayers(void){
 		if (!_players[i].active){continue;}
 
 		TickState(&_players[i]);
+    	printf("Server: inputs sending: %d %d\n", _inputs[i].thrust, _inputs[i].rotation);
 		PlayerMove(&_players[i], i, _inputs[i].thrust, _inputs[i].rotation);
 
 		if (_players[i].state == PLAYER_STUNNED)

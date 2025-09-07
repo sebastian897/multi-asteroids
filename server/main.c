@@ -28,13 +28,13 @@ int main(){
 
 	while(!WindowShouldClose() && !_quitGame)
 	{
+		char buf[BUFSIZE];
+
 		ReceiveMultiple();
 
-		
 
 		UpdateDrawFrame();
 
-		char buf[BUFSIZE];
         memcpy(buf+sizeof(unsigned char), &_asteroids, sizeof(Asteroid)*ASTEROID_MAX);
         memcpy(buf+sizeof(unsigned char)+sizeof(Asteroid)*ASTEROID_MAX, &_players, sizeof(Player)*PLAYERS_MAX);
 		int count = 0;
