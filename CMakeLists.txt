@@ -4,6 +4,7 @@ project(multi-asteroid)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_C_STANDARD_REQUIRED ON)
 
+# fetch an compile raylib
 include(FetchContent)
 
 FetchContent_Declare(
@@ -14,6 +15,7 @@ FetchContent_Declare(
 
 FetchContent_MakeAvailable(raylib)
 
+# compile a "common" library which will be used from both server and client
 add_library(multi-asteroid-common 
     src/asteroid.c
     src/debug.c  
@@ -33,6 +35,7 @@ target_compile_options(multi-asteroid-common PRIVATE
     $<$<C_COMPILER_ID:MSVC>:/W4>
 )
 
+# compile the server
 add_executable(server 
     server/buffer_control.c  
     server/game.c  
@@ -49,12 +52,12 @@ target_link_libraries(server PRIVATE
 if(WIN32)
     target_link_libraries(server PRIVATE ws2_32)
 endif()
-
 target_compile_options(server PRIVATE
     $<$<C_COMPILER_ID:GNU,Clang>:-Wall -Wextra -Wpedantic -fdiagnostics-color=always>
     $<$<C_COMPILER_ID:MSVC>:/W4>
 )
 
+# compile the client
 add_executable(client 
     client/clien.c
     client/client.c
@@ -71,12 +74,12 @@ target_link_libraries(client PRIVATE
 if(WIN32)
     target_link_libraries(client PRIVATE ws2_32)
 endif()
-
 target_compile_options(client PRIVATE
     $<$<C_COMPILER_ID:GNU,Clang>:-Wall -Wextra -Wpedantic -fdiagnostics-color=always>
     $<$<C_COMPILER_ID:MSVC>:/W4>
 )
 
+# copy compile_commands.json from the build dir to the source dir
 add_custom_target(copy_compile_commands ALL
     COMMAND ${CMAKE_COMMAND} -E copy_if_different
         "${CMAKE_BINARY_DIR}/compile_commands.json"
