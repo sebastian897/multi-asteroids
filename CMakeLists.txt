@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 3.28)
 project(multi-asteroid)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+set(CMAKE_POST_CONFIGURE_SCRIPT "${CMAKE_SOURCE_DIR}/cmake/CopyCompileCommands.cmake")
+
 set(CMAKE_C_STANDARD_REQUIRED ON)
 
 include(FetchContent)
@@ -76,3 +78,4 @@ target_compile_options(client PRIVATE
     $<$<C_COMPILER_ID:GNU,Clang>:-Wall -Wextra -Wpedantic -fdiagnostics-color=always>
     $<$<C_COMPILER_ID:MSVC>:/W4>
 )
+
