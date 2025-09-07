@@ -6,6 +6,7 @@
 #include "constants.h"
 #include "game.h"
 #include "game_asteroids.h"
+#include "game_projectiles.h"
 #include "server.h"
 #include <string.h>
 #include <stdio.h>
@@ -37,14 +38,9 @@ int main(){
 
         memcpy(buf+sizeof(unsigned char), &_asteroids, sizeof(Asteroid)*ASTEROID_MAX);
         memcpy(buf+sizeof(unsigned char)+sizeof(Asteroid)*ASTEROID_MAX, &_players, sizeof(Player)*PLAYERS_MAX);
-		int count = 0;
-        for (int i = 0; i < ASTEROID_MAX; i++){
-            if (_asteroids[i].active){
-                count++;
-            }
-        }
-        printf("Server: Number of asteroids sent: %d", count);
-        Broadcast(buf, sizeof(unsigned char)+sizeof(Asteroid)*ASTEROID_MAX+sizeof(Player)*PLAYERS_MAX);
+		memcpy(buf+sizeof(unsigned char)+sizeof(Asteroid)*ASTEROID_MAX+sizeof(Player)*PLAYERS_MAX, &_projectiles, sizeof(Projectile)*PROJECTILE_MAX);
+
+        Broadcast(buf, sizeof(unsigned char)+sizeof(Asteroid)*ASTEROID_MAX+sizeof(Player)*PLAYERS_MAX+sizeof(Projectile)*PROJECTILE_MAX);
 	}
 	
 	CloseWindow();

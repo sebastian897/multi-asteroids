@@ -9,12 +9,13 @@
 #define PROJECTILE_LEN 30.0f
 #define PROJECTILE_COLOR CLITERAL(Color){245, 201, 207, 255}
 
-Projectile CreateProjectile(Vector2 position, float rotation)
+Projectile CreateProjectile(Vector2 position, float rotation, signed char id)
 {
 	return (Projectile) {
 		.position = position,
 		.rotation = rotation,
 		.active = true,
+		.playerId = id,
 		.creationTime = GetTime()
 	};
 }

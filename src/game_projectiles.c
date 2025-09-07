@@ -2,10 +2,9 @@
 #include "constants.h"
 #include "game_asteroids.h"
 
-#define PROJECTILE_MAX 12
-static Projectile _projectiles[PROJECTILE_MAX];
+Projectile _projectiles[PROJECTILE_MAX];
 
-void AddProjectile(Vector2 position, float rotation)
+void AddProjectile(Vector2 position, float rotation, signed char id)
 {
 	bool created = false;
 
@@ -16,7 +15,7 @@ void AddProjectile(Vector2 position, float rotation)
 			continue;
 		}
 
-		_projectiles[i] = CreateProjectile(position, rotation);
+		_projectiles[i] = CreateProjectile(position, rotation, id);
 		created = true;
 		break;
 	}

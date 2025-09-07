@@ -31,6 +31,12 @@ typedef enum Thrust :bool
 	THRUST_FORWARD=1
 } Thrust;
 
+typedef enum Shooting :bool
+{
+	SHOOT_NONE=0,
+	SHOOT_BULLET=1
+} Shooting;
+
 typedef enum Rotation :signed char
 {
 	ROTATION_NONE=0,
@@ -43,6 +49,7 @@ typedef struct PlayerInputs
 {
 	Thrust thrust;
 	Rotation rotation;
+	Shooting shooting;
 } PlayerInputs;
 
 

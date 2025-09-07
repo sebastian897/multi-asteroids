@@ -14,4 +14,6 @@
 
 #define PLAYERS_MAX 8
 
+#define PROJECTILE_MAX 4
+
 #endif

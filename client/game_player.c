@@ -33,9 +33,11 @@ void ResetPlayer(Player* player)
 void DrawPlayers(void)
 {
 	for(int i = 0; i < PLAYERS_MAX; i++){
+		if (!_players[i].active) continue;
 		PlayerDraw(&_players[i], _texturePlayer);
 	}
 }
+
 
 static void OnDeath(Player* player)
 {
@@ -113,15 +115,15 @@ void UpdatePlayers(void){
 			return;
 		}
 		
-		float time = GetTime();
-		if (IsKeyDown(KEY_SPACE))
-		{
-			if (time > _players[i].lastFireTime + PLAYER_FIRE_DELAY)
-			{
-				AddProjectile(Vector2Add(_players[i].position, Vector2Scale(PlayerFacingDirection(_players[i]), PLAYER_PROJECTILE_OFFSET)), _players[i].rotation);
-				_players[i].lastFireTime = time;
-			}
-		}
+		// float time = GetTime();
+		// if (IsKeyDown(KEY_SPACE))
+		// {
+		// 	if (time > _players[i].lastFireTime + PLAYER_FIRE_DELAY)
+		// 	{
+		// 		AddProjectile(Vector2Add(_players[i].position, Vector2Scale(PlayerFacingDirection(_players[i]), PLAYER_PROJECTILE_OFFSET)), _players[i].rotation);
+		// 		_players[i].lastFireTime = time;
+		// 	}
+		// }
 
 		if (_players[i].state == PLAYER_IFRAME)
 		{

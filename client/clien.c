@@ -10,6 +10,7 @@
 #include "constants.h"
 #include "game.h"
 #include "game_asteroids.h"
+#include "game_projectiles.h"
 
 bool _quitGame = false;
 
@@ -44,22 +45,21 @@ int main(){
         ClientReceive();
         memcpy(&_playerId, buf, 1);
         _players[_playerId].active = 1;
+        
         memcpy(&_asteroids, buf+sizeof(unsigned char), sizeof(Asteroid)*ASTEROID_MAX);
         memcpy(&_players, buf+sizeof(unsigned char)+sizeof(Asteroid)*ASTEROID_MAX, sizeof(Player)*PLAYERS_MAX);
-        int count = 0;
-        for (int i = 0; i < ASTEROID_MAX; i++){
-            if (_asteroids[i].active){
-                count++;
-            }
-        }
+		memcpy(&_projectiles, buf+sizeof(unsigned char)+sizeof(Asteroid)*ASTEROID_MAX+sizeof(Player)*PLAYERS_MAX, sizeof(Projectile)*PROJECTILE_MAX);
+        
         bool thrust = IsKeyDown(KEY_UP);
+        bool shooting = IsKeyDown(KEY_SPACE);
         signed char rotation = (int)IsKeyDown(KEY_RIGHT) - (int)IsKeyDown(KEY_LEFT);
         memcpy(buf, &_playerId, 1);        
         memcpy(buf+sizeof(_playerId), &thrust, sizeof(thrust));
         memcpy(buf+sizeof(_playerId)+sizeof(thrust), &rotation, sizeof(rotation));
-        
-        printf("Client: inputs sending: %d %d %d\n", (signed char)buf[0], (bool)buf[1], (signed char)buf[2]);
-        Send(buf, sizeof(_playerId)+sizeof(thrust)+sizeof(rotation));
+        memcpy(buf+sizeof(_playerId)+sizeof(thrust)+sizeof(rotation), &shooting, sizeof(shooting));
+
+        printf("Client: inputs sending: %d %d %d %d\n", (signed char)buf[0], (bool)buf[1], (signed char)buf[2], buf[3]);
+        Send(buf, sizeof(_playerId)+sizeof(thrust)+sizeof(rotation)+sizeof(shooting));
 
         // printf("Client: id = %d", _playerId);
 		UpdateDrawFrame();

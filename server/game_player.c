@@ -36,6 +36,7 @@ void ResetPlayer(Player* player)
 void DrawPlayers(void)
 {
 	for(int i = 0; i < PLAYERS_MAX; i++){
+		if (!_players[i].active) continue;
 		PlayerDraw(&_players[i], _texturePlayer);
 	}
 }
@@ -109,7 +110,7 @@ void UpdatePlayers(void){
 		if (!_players[i].active){continue;}
 
 		TickState(&_players[i]);
-    	printf("Server: inputs sending: %d %d\n", _inputs[i].thrust, _inputs[i].rotation);
+    	printf("Server: inputs sending: %d %d %d\n", _inputs[i].thrust, _inputs[i].rotation, _inputs[i].shooting);
 		PlayerMove(&_players[i], i, _inputs[i].thrust, _inputs[i].rotation);
 
 		if (_players[i].state == PLAYER_STUNNED)
@@ -118,11 +119,12 @@ void UpdatePlayers(void){
 		}
 		
 		float time = GetTime();
-		if (IsKeyDown(KEY_SPACE))
+		// if (IsKeyDown(KEY_SPACE))
+		if (_inputs[i].shooting)
 		{
 			if (time > _players[i].lastFireTime + PLAYER_FIRE_DELAY)
 			{
-				AddProjectile(Vector2Add(_players[i].position, Vector2Scale(PlayerFacingDirection(_players[i]), PLAYER_PROJECTILE_OFFSET)), _players[i].rotation);
+				AddProjectile(Vector2Add(_players[i].position, Vector2Scale(PlayerFacingDirection(_players[i]), PLAYER_PROJECTILE_OFFSET)), _players[i].rotation, i);
 				_players[i].lastFireTime = time;
 			}
 		}
