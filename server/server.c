@@ -3,7 +3,7 @@
 #include <winsock2.h>
 #include <Ws2tcpip.h>
 #include <stdbool.h>
-#include "constants.h"
+#include "../src/constants.h"
 
 #define PORT 5150
 #define BUFLEN 511

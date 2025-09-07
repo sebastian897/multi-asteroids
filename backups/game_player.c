@@ -1,5 +1,4 @@
 #include "game_player.h"
-#include "game.h"
 #include "game_asteroids.h"
 #include "game_projectiles.h"
 

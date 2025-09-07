@@ -6,10 +6,10 @@
 #include <time.h>
 #include "raylib.h"
 
-#include "../src/game_player.h"
-#include "../src/constants.h"
-#include "../src/game.h"
-#include "../src/game_asteroids.h"
+#include "game_player.h"
+#include "constants.h"
+#include "game.h"
+#include "game_asteroids.h"
 
 bool _quitGame = false;
 

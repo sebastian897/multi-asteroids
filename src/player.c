@@ -2,7 +2,6 @@
 #include "raymath.h"
 #include "debug.h"
 #include "constants.h"
-#include "game.h"
 
 #define PLAYER_ROT_SPEED 360
 #define PLAYER_SPEED 250
@@ -17,10 +16,10 @@
 
 static void UpdateAngle(Player* player, int id, float frametime)
 {
-	if (_playerId==id){
+	// if (_playerId==id){
 		int xIn = (int)IsKeyDown(KEY_RIGHT) - (int)IsKeyDown(KEY_LEFT);
 		player->rotation += (xIn * PLAYER_ROT_SPEED * frametime);
-	}
+	// }
 }
 
 static void UpdateVelocity(Player* player, int id, float frametime)
@@ -30,7 +29,7 @@ static void UpdateVelocity(Player* player, int id, float frametime)
 	Vector2 facingDirection = PlayerFacingDirection(*player);
 
 	int yIn = (int)IsKeyDown(KEY_UP) - (int)IsKeyDown(KEY_DOWN);
-	if (yIn > 0 && _playerId==id){
+	if (yIn > 0){
 		player->velocity = Vector2Add(player->velocity,
 			Vector2Scale(facingDirection, PLAYER_ACCELERATION * frametime));
 		if (mag > PLAYER_SPEED)
