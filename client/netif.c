@@ -1,6 +1,5 @@
 #include "netif.h"
 #include <stdio.h>
-#include "../src/server.h"
 
 // bool active;
 
