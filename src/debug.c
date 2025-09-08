@@ -1,7 +1,6 @@
 #include "debug.h"
 #include "constants.h"
 
-#include "raymath.h"
 #include "raygui.h"
 
 static bool _showDebugMenu = false;

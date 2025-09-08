@@ -14,7 +14,7 @@
 #define FIELD_MIN_Y (-PLAYER_RADIUS / 2)
 #define FIELD_MAX_Y (SCREEN_HEIGHT + PLAYER_RADIUS / 2)
 
-static void UpdateAngle(Player* player, int id, float frametime, signed char rotvel)
+static void UpdateAngle(Player* player, float frametime, signed char rotvel)
 {
 	// if (_playerId==id){
 	// int xIn = (int)IsKeyDown(KEY_RIGHT) - (int)IsKeyDown(KEY_LEFT); use for client
@@ -24,7 +24,7 @@ static void UpdateAngle(Player* player, int id, float frametime, signed char rot
 	// }
 }
 
-static void UpdateVelocity(Player* player, int id, float frametime, bool thrust)
+static void UpdateVelocity(Player* player, float frametime, bool thrust)
 {
 	float magSqr = Vector2LengthSqr(player->velocity);
 	float mag = sqrt(magSqr);
@@ -111,8 +111,8 @@ void PlayerMove(Player* player, int id, bool thrust, signed char rotvel)
 
 	if (player->state != PLAYER_STUNNED && player->state != PLAYER_DEAD)
 	{
-		UpdateAngle(player, id, frametime, rotvel);
-		UpdateVelocity(player, id, frametime, thrust);
+		UpdateAngle(player, frametime, rotvel);
+		UpdateVelocity(player, frametime, thrust);
 	}
 
 	player->position = Vector2Add(player->position, Vector2Scale(player->velocity, frametime));

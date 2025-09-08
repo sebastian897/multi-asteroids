@@ -49,7 +49,7 @@ void ServerInit(void) {
 
   // Prepare server address
   server.sin_family = AF_INET;
-  const char *ip_str = "192.168.40.82";
+  const char *ip_str = "192.168.1.216";
   if (inet_pton(AF_INET, ip_str, &server.sin_addr.s_addr) != 1) {
     printf("Server: inet_pton failed: %d\n", WSAGetLastError());
 #ifdef WIN32
@@ -72,7 +72,7 @@ void ServerInit(void) {
   printf("Server: Waiting for UDP packet on port %s:%d...\n", ip_str, PORT);
 }
 
-void ServerShutdown() {
+void ServerShutdown(void) {
   closesocket(sock);
 #ifdef WIN32
   WSACleanup();
@@ -93,7 +93,7 @@ void Broadcast(char *buf, int size) {
   }
 }
 
-void RecordClient(struct sockaddr_in *cl, int recv_len) {
+void RecordClient(struct sockaddr_in *cl) {
   printf("Server: Recording client:\n");
   bool found = false;
   int slot = -1;
@@ -120,7 +120,7 @@ void RecordClient(struct sockaddr_in *cl, int recv_len) {
          ntohs(cl->sin_port));
 }
 
-void Receive() {
+void Receive(void) {
   struct sockaddr_in cl;
   // Receive a packet
   int recv_len =
@@ -134,10 +134,10 @@ void Receive() {
 #endif
     exit(1);
   }
-  RecordClient(&cl, recv_len);
+  RecordClient(&cl);
 }
 
-int ReceiveMultiple() {
+int ReceiveMultiple(void) {
 #define SILENCE_TIMEOUT_MS 1
   int ret;
   struct sockaddr_in cl;
@@ -176,7 +176,7 @@ int ReceiveMultiple() {
 #endif
         exit(1);
       }
-      RecordClient(&cl, bytesReceived);
+      RecordClient(&cl);
       StoreInputs(buf);
       packets++;
     }

@@ -1,4 +1,4 @@
-#include "asteroid.h"
+#include "raylib.h"
 #include "raymath.h"
 
 #define DEBUG_CONE_LIFESPAN 1.0f // duration of cone fadeout
