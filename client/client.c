@@ -1,10 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <sys/socket.h>
 #include "winsock_compat.h"
 #include "client.h"
 
-#define SERVER "192.168.40.82"
+#define SERVER "192.168.1.216"
 #define PORT 5150
 
 #ifdef WIN32
@@ -19,7 +18,7 @@ static socklen_t slen = sizeof(client);
 #endif
 char buf[BUFLEN];
 
-void ClientInit(){
+void ClientInit(void){
 #ifdef WIN32
     // Initialize Winsock
     if (WSAStartup(MAKEWORD(2,2), &wsa) != 0) {
@@ -54,10 +53,10 @@ void Send(const char* buf, int size){
 #endif
         exit(1);
     }
-    printf("Client: Message sent\n");
+    // printf("Client: Message sent. Waiting for reply...\n");
 }
 
-void ClientReceive(){
+void ClientReceive(void){
     // Receive response
     int recv_len = recvfrom(sock, buf, BUFLEN-1, 0, (struct sockaddr*)&client, &slen);
     if (recv_len == SOCKET_ERROR) {
@@ -73,7 +72,8 @@ void ClientReceive(){
     // printf("Client: Server reply: %s\n", buf);
 }
 
-void ClientShutdown(){
+void ClientShutdown(void){
+    // Cleanup
     closesocket(sock);
 #ifdef WIN32
     WSACleanup();

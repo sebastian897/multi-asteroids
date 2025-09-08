@@ -5,7 +5,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <sys/socket.h>
 
 #define PORT 5150
 #define BUFLEN 511
@@ -25,7 +24,7 @@ static socklen_t slen = sizeof(struct sockaddr_in);
 
 char buf[BUFLEN];
 
-void ServerInit() {
+void ServerInit(void) {
   struct sockaddr_in server;
 #ifdef WIN32
   WSADATA wsa;

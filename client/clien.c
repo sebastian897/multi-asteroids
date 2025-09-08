@@ -2,7 +2,6 @@
 #include "netif.h"
 #include <string.h>
 #include <stdio.h>
-#include <stdlib.h>
 #include <time.h>
 #include "raylib.h"
 
@@ -25,7 +24,8 @@ void UpdateDrawFrame(void)
 	EndDrawing();
 }
 
-int main(){
+int main(void){
+    ClientInit();
     printf("Client Starting..\n");
     ClientInit();
     Send("Client first packet", 20);
@@ -56,10 +56,10 @@ int main(){
         memcpy(buf+sizeof(_playerId)+sizeof(thrust), &rotation, sizeof(rotation));
         memcpy(buf+sizeof(_playerId)+sizeof(thrust)+sizeof(rotation), &shooting, sizeof(shooting));
 
-        printf("Client: inputs sending: %d %d %d %d\n", (signed char)buf[0], (bool)buf[1], (signed char)buf[2], buf[3]);
+        // printf("Client: inputs sending: %d %d %d %d\n", (signed char)buf[0], (bool)buf[1], (signed char)buf[2], buf[3]);
         Send(buf, sizeof(_playerId)+sizeof(thrust)+sizeof(rotation)+sizeof(shooting));
 
-        // printf("Client: id = %d", _playerId);
+        printf("Client: id = %d", _playerId);
 		UpdateDrawFrame();
     }
     _players[_playerId].active = 0;
