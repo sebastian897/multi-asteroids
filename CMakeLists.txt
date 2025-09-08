@@ -9,9 +9,15 @@ function(setup_target_warnings_and_sanitizers target)
         $<$<C_COMPILER_ID:GNU,Clang>:-Wall -Wextra -Wpedantic -fdiagnostics-color=always>
         $<$<C_COMPILER_ID:MSVC>:/W4>
     )
-    set(SANITIZER_EXPR $<$<AND:$<C_COMPILER_ID:GNU,Clang>,$<NOT:$<PLATFORM_ID:Windows>>,$<NOT:$<CONFIG:Release>>>:-fsanitize=address,undefined,leak>)
+    set(SANITIZER_EXPR $<$<AND:$<C_COMPILER_ID:GNU,Clang>,$<NOT:$<PLATFORM_ID:Windows>>,$<CONFIG:Debug>>:-fsanitize=address,undefined,leak>)
     target_compile_options(${target} PRIVATE ${SANITIZER_EXPR})
     target_link_options(${target} PRIVATE ${SANITIZER_EXPR})
+endfunction()
+
+function(opt_link_winsock target)
+  if(WIN32)
+    target_link_libraries(${target} PRIVATE ws2_32)
+  endif()
 endfunction()
 
 # fetch an compile raylib
@@ -53,12 +59,8 @@ add_executable(server
 )
 
 target_compile_features(server INTERFACE c_std_23)
-target_link_libraries(server PRIVATE 
-    raylib  
-    multi-asteroid-common)
-if(WIN32)
-    target_link_libraries(server PRIVATE ws2_32)
-endif()
+target_link_libraries(server PRIVATE raylib multi-asteroid-common)
+opt_link_winsock(server)
 setup_target_warnings_and_sanitizers(server)
 
 # compile the client
@@ -72,12 +74,8 @@ add_executable(client
 )
 
 target_compile_features(client INTERFACE c_std_23)
-target_link_libraries(client PRIVATE 
-    raylib  
-    multi-asteroid-common)
-if(WIN32)
-    target_link_libraries(client PRIVATE ws2_32)
-endif()
+target_link_libraries(client PRIVATE raylib multi-asteroid-common)
+opt_link_winsock(client)
 setup_target_warnings_and_sanitizers(client)
 
 # copy compile_commands.json from the build dir to the source dir
