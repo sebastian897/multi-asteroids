@@ -1,4 +1,3 @@
-#include <stdlib.h>
 #include <time.h>
 
 #include "raylib.h"
@@ -9,7 +8,6 @@
 #include "game_projectiles.h"
 #include "server.h"
 #include <string.h>
-#include <stdio.h>
 #include "game_player.h"
 
 void UpdateDrawFrame(void);
@@ -18,7 +16,7 @@ bool _quitGame = false;
 
 #define BUFSIZE 1024
 
-int main(){
+int main(void){
 	ServerInit();
     SetRandomSeed(time(0));
 

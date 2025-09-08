@@ -1,5 +1,5 @@
 void Broadcast(const char* buf, int size);
-void ServerShutdown();
-void ServerInit();
-void Receive();
-int ReceiveMultiple();
+void ServerShutdown(void);
+void ServerInit(void);
+void Receive(void);
+int ReceiveMultiple(void);

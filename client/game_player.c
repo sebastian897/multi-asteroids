@@ -1,15 +1,15 @@
 #include "game_player.h"
 #include "game_asteroids.h"
-#include "game_projectiles.h"
 
 #include "raymath.h"
 
 Player _players[PLAYERS_MAX] = {0};
-static Texture2D _texturePlayer;
+Texture2D _texturePlayer;
 
 void InitPlayers(void){
-	ResetPlayers();
 	_texturePlayer = LoadTexture("resources/ship.png");
+
+	ResetPlayers();
 }
 
 void ResetPlayers(void)

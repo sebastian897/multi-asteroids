@@ -4,15 +4,16 @@
 #include "game_asteroids.h"
 #include "game_projectiles.h"
 
+#include "raylib.h"
 #include "raymath.h"
 
 Player _players[PLAYERS_MAX] = {0};
 PlayerInputs _inputs[PLAYERS_MAX] = {0};
-static Texture2D _texturePlayer;
+Texture2D _texturePlayer;
 
 void InitPlayers(void){
-	ResetPlayers();
 	_texturePlayer = LoadTexture("resources/ship.png");
+	ResetPlayers();
 }
 
 void ResetPlayers(void)
@@ -37,6 +38,9 @@ void DrawPlayers(void)
 {
 	for(int i = 0; i < PLAYERS_MAX; i++){
 		if (!_players[i].active) continue;
+		printf("Drawing player: %d\n", i);
+		printf("X: %f\n", _players[i].position.x);
+		printf("Y: %f\n", _players[i].position.y);
 		PlayerDraw(&_players[i], _texturePlayer);
 	}
 }
@@ -110,7 +114,7 @@ void UpdatePlayers(void){
 		if (!_players[i].active){continue;}
 
 		TickState(&_players[i]);
-    	printf("Server: inputs sending: %d %d %d\n", _inputs[i].thrust, _inputs[i].rotation, _inputs[i].shooting);
+    	// printf("Server: inputs recieved: %d %d %d %d\n", i, _inputs[i].thrust, _inputs[i].rotation, _inputs[i].shooting);
 		PlayerMove(&_players[i], i, _inputs[i].thrust, _inputs[i].rotation);
 
 		if (_players[i].state == PLAYER_STUNNED)
