@@ -65,8 +65,8 @@ void DrawGame(void)
 {
 	const int buttonWidth = 200;
 	const int buttonHeight = 80;
-	const Rectangle topButton = {SCREEN_CENTER.x - buttonWidth / 2, SCREEN_CENTER.y - buttonHeight / 2 - 5, buttonWidth, buttonHeight};
-	const Rectangle bottomButton = {SCREEN_CENTER.x - buttonWidth / 2, SCREEN_CENTER.y + buttonHeight / 2 + 5, buttonWidth, buttonHeight};
+	const Rectangle topButton = {SCREEN_CENTER.x - buttonWidth / 2.0, SCREEN_CENTER.y - buttonHeight / 2.0 - 5, buttonWidth, buttonHeight};
+	const Rectangle bottomButton = {SCREEN_CENTER.x - buttonWidth / 2.0, SCREEN_CENTER.y + buttonHeight / 2.0 + 5, buttonWidth, buttonHeight};
 
 	switch (_state)
 	{
