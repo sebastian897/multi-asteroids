@@ -4,6 +4,16 @@ project(multi-asteroid)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_C_STANDARD_REQUIRED ON)
 
+function(setup_target_warnings_and_sanitizers target)
+    target_compile_options(${target} PRIVATE
+        $<$<C_COMPILER_ID:GNU,Clang>:-Wall -Wextra -Wpedantic -fdiagnostics-color=always>
+        $<$<C_COMPILER_ID:MSVC>:/W4>
+    )
+    set(SANITIZER_EXPR $<$<AND:$<C_COMPILER_ID:GNU,Clang>,$<NOT:$<PLATFORM_ID:Windows>>,$<NOT:$<CONFIG:Release>>>:-fsanitize=address,undefined,leak>)
+    target_compile_options(${target} PRIVATE ${SANITIZER_EXPR})
+    target_link_options(${target} PRIVATE ${SANITIZER_EXPR})
+endfunction()
+
 # fetch an compile raylib
 include(FetchContent)
 
@@ -30,10 +40,7 @@ add_library(multi-asteroid-common
 target_link_libraries(multi-asteroid-common PRIVATE raylib)
 target_include_directories(multi-asteroid-common INTERFACE src)
 target_compile_features(multi-asteroid-common INTERFACE c_std_23)
-target_compile_options(multi-asteroid-common PRIVATE
-    $<$<C_COMPILER_ID:GNU,Clang>:-Wall -Wextra -Wpedantic -fdiagnostics-color=always>
-    $<$<C_COMPILER_ID:MSVC>:/W4>
-)
+setup_target_warnings_and_sanitizers(multi-asteroid-common)
 
 # compile the server
 add_executable(server 
@@ -52,10 +59,7 @@ target_link_libraries(server PRIVATE
 if(WIN32)
     target_link_libraries(server PRIVATE ws2_32)
 endif()
-target_compile_options(server PRIVATE
-    $<$<C_COMPILER_ID:GNU,Clang>:-Wall -Wextra -Wpedantic -fdiagnostics-color=always>
-    $<$<C_COMPILER_ID:MSVC>:/W4>
-)
+setup_target_warnings_and_sanitizers(server)
 
 # compile the client
 add_executable(client 
@@ -74,10 +78,7 @@ target_link_libraries(client PRIVATE
 if(WIN32)
     target_link_libraries(client PRIVATE ws2_32)
 endif()
-target_compile_options(client PRIVATE
-    $<$<C_COMPILER_ID:GNU,Clang>:-Wall -Wextra -Wpedantic -fdiagnostics-color=always>
-    $<$<C_COMPILER_ID:MSVC>:/W4>
-)
+setup_target_warnings_and_sanitizers(client)
 
 # copy compile_commands.json from the build dir to the source dir
 add_custom_target(copy_compile_commands ALL

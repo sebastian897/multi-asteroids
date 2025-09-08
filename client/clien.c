@@ -19,19 +19,15 @@ bool _quitGame = false;
 void UpdateDrawFrame(void)
 {
 	UpdateGame();
-
 	BeginDrawing();
-
-    ClearBackground(NEARBLACK);
-
-    DrawGame();
-
+        ClearBackground(NEARBLACK);
+        DrawGame();
 	EndDrawing();
 }
 
 int main(){
-    ClientInit();
     printf("Client Starting..\n");
+    ClientInit();
     Send("Client first packet", 20);
 
     SetRandomSeed(time(0));
@@ -42,7 +38,9 @@ int main(){
 
 	while(!WindowShouldClose() && !_quitGame)
 	{
+          printf("Client Receiving..\n");
         ClientReceive();
+          printf("Client Received..\n");
         memcpy(&_playerId, buf, 1);
         _players[_playerId].active = 1;
         
