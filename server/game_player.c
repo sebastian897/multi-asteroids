@@ -38,9 +38,9 @@ void DrawPlayers(void)
 {
 	for(int i = 0; i < PLAYERS_MAX; i++){
 		if (!_players[i].active) continue;
-		printf("Drawing player: %d\n", i);
-		printf("X: %f\n", _players[i].position.x);
-		printf("Y: %f\n", _players[i].position.y);
+		// printf("Drawing player: %d\n", i);
+		// printf("X: %f\n", _players[i].position.x);
+		// printf("Y: %f\n", _players[i].position.y);
 		PlayerDraw(&_players[i], _texturePlayer);
 	}
 }
@@ -114,8 +114,9 @@ void UpdatePlayers(void){
 		if (!_players[i].active){continue;}
 
 		TickState(&_players[i]);
-    	// printf("Server: inputs recieved: %d %d %d %d\n", i, _inputs[i].thrust, _inputs[i].rotation, _inputs[i].shooting);
-		PlayerMove(&_players[i], i, _inputs[i].thrust, _inputs[i].rotation);
+    	printf("Server: inputs recieved: %d %d %d %d\n", i, _inputs[i].thrust, _inputs[i].rotation, _inputs[i].shooting);
+    	printf("Server: Player: vx=%f,vy=%f, \n", _players[i].velocity.x, _players[i].velocity.y);
+		PlayerMove(&_players[i], _inputs[i].thrust, _inputs[i].rotation);
 
 		if (_players[i].state == PLAYER_STUNNED)
 		{

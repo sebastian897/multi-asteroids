@@ -49,7 +49,7 @@ void ServerInit(void) {
 
   // Prepare server address
   server.sin_family = AF_INET;
-  const char *ip_str = "192.168.1.216";
+  const char *ip_str = SERVER;
   if (inet_pton(AF_INET, ip_str, &server.sin_addr.s_addr) != 1) {
     printf("Server: inet_pton failed: %d\n", WSAGetLastError());
 #ifdef WIN32
@@ -117,7 +117,7 @@ void RecordClient(struct sockaddr_in *cl) {
     clients[slot].active = true;
   }
   printf("Server: Received packet from %s:%d\n", inet_ntoa(cl->sin_addr),
-         ntohs(cl->sin_port));
+  ntohs(cl->sin_port));
 }
 
 void Receive(void) {

@@ -2,8 +2,8 @@
 #include <stdlib.h>
 #include "winsock_compat.h"
 #include "client.h"
+#include "constants.h"
 
-#define SERVER "192.168.1.216"
 #define PORT 5150
 
 #ifdef WIN32

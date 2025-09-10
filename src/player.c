@@ -105,7 +105,7 @@ static void UpdateWrap(Player* player, float frametime)
 	}
 }
 
-void PlayerMove(Player* player, int id, bool thrust, signed char rotvel)
+void PlayerMove(Player* player, bool thrust, signed char rotvel)
 {
 	float frametime = GetFrameTime();
 

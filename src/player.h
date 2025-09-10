@@ -54,7 +54,7 @@ typedef struct PlayerInputs
 
 
 
-void PlayerMove(Player* player, int id, bool thrust, signed char rotvel);
+void PlayerMove(Player* player, bool thrust, signed char rotvel);
 void PlayerDraw(Player* player, Texture2D texture);
 Vector2 PlayerFacingDirection(Player player);
 void PlayerSetState(Player* player, PlayerState state);
