@@ -1,4 +1,5 @@
 #include "player.h"
+#include "asteroid.h"
 #include "raymath.h"
 #include "debug.h"
 #include "constants.h"
@@ -119,6 +120,31 @@ void PlayerMove(Player* player, bool thrust, signed char rotvel)
 	UpdateWrap(player, frametime);
 
 	SetPlayerInfo(player->position, player->velocity, player->rotation);
+}
+
+static void OnDeath(Player* player)
+{
+	PlayerSetState(player, PLAYER_DEAD);
+}
+
+void OnCollision(Player* player, Asteroid* asteroid)
+{
+	const float playerNudgeMagnitude = 200.0f;
+	const float asteroidSpeedReduction = 0.4f;
+
+	player->health--;
+	if (player->health <= 0)
+	{
+		OnDeath(player);
+		return;
+	}
+
+	PlayerSetState(player, PLAYER_STUNNED);
+
+	Vector2 nudgeDirection = Vector2Normalize(Vector2Subtract(player->position, asteroid->position));
+	player->velocity = Vector2Scale(nudgeDirection, playerNudgeMagnitude);
+
+	asteroid->velocity = Vector2Scale(asteroid->velocity, asteroidSpeedReduction);
 }
 
 void PlayerDraw(Player* player, Texture2D texture)

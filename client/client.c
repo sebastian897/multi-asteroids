@@ -3,8 +3,6 @@
 #include "winsock_compat.h"
 #include "client.h"
 
-#define PORT 5150
-
 #ifdef WIN32
   WSADATA wsa;
 #endif

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "raylib.h"
+#include "asteroid.h"
 
 #define PLAYER_RADIUS 24
 
@@ -57,3 +58,4 @@ void PlayerMove(Player* player, bool thrust, signed char rotvel);
 void PlayerDraw(Player* player, Texture2D texture);
 Vector2 PlayerFacingDirection(Player player);
 void PlayerSetState(Player* player, PlayerState state);
+void OnCollision(Player* player, Asteroid* asteroid);

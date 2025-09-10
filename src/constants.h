@@ -16,4 +16,6 @@
 #define PROJECTILE_MAX 4
 
 #define SERVER "192.168.1.216"
+#define PORT 5150
+
 #define BUFLEN 1024

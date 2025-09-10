@@ -29,7 +29,7 @@ int main(void){
   bool inputsPacket = false;
   char* msg = "Client first packet";
   memcpy(buf, &inputsPacket, sizeof(inputsPacket));        
-  memcpy(buf+sizeof(inputsPacket), &msg, strlen(msg));        
+  memcpy(buf+sizeof(inputsPacket), msg, strlen(msg));        
   Send(buf, strlen(msg)+sizeof(inputsPacket));
 
   SetRandomSeed(time(0));
