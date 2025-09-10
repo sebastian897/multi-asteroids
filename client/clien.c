@@ -1,5 +1,4 @@
 #include "client.h"
-#include "netif.h"
 #include <stdbool.h>
 #include <string.h>
 #include <stdio.h>
@@ -13,8 +12,6 @@
 #include "game_projectiles.h"
 
 bool _quitGame = false;
-
-#define BUFSIZE 1024
 
 void UpdateDrawFrame(void)
 {

@@ -7,7 +7,6 @@
 #include <string.h>
 
 #define PORT 5150
-#define BUFLEN 511
 
 typedef struct client {
   struct sockaddr_in addr;

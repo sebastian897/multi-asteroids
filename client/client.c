@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include "winsock_compat.h"
 #include "client.h"
-#include "constants.h"
 
 #define PORT 5150
 

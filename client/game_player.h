@@ -14,5 +14,3 @@ void ResetPlayer(Player* player);
 void ResetPlayers(void);
 
 extern Player _players[PLAYERS_MAX];
-
-#endif

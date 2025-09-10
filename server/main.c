@@ -14,8 +14,6 @@ void UpdateDrawFrame(void);
 
 bool _quitGame = false;
 
-#define BUFSIZE 1024
-
 int main(void){
 	ServerInit();
     SetRandomSeed(time(0));
@@ -27,7 +25,7 @@ int main(void){
 
 	while(!WindowShouldClose() && !_quitGame)
 	{
-		char buf[BUFSIZE];
+		char buf[BUFLEN];
 
 		ReceiveMultiple();
 
@@ -40,7 +38,7 @@ int main(void){
         memcpy(buf+sizeof(unsigned char)+sizeof(Asteroid)*ASTEROID_MAX, &_players, sizeof(Player)*PLAYERS_MAX);
 		memcpy(buf+sizeof(unsigned char)+sizeof(Asteroid)*ASTEROID_MAX+sizeof(Player)*PLAYERS_MAX, &_projectiles, sizeof(Projectile)*PROJECTILE_MAX);
 
-        Broadcast(buf, sizeof(unsigned char)+sizeof(Asteroid)*ASTEROID_MAX+sizeof(Player)*PLAYERS_MAX+sizeof(Projectile)*PROJECTILE_MAX);
+        Broadcast(buf, (sizeof(unsigned char)+sizeof(Asteroid)*ASTEROID_MAX+sizeof(Player)*PLAYERS_MAX+sizeof(Projectile)*PROJECTILE_MAX));
 	}
 	
 	CloseWindow();
