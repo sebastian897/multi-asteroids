@@ -1,5 +1,4 @@
-#ifndef ASTEROIDS_H_
-#define ASTEROIDS_H_
+#pragma once
 
 #include "asteroid.h"
 #include "constants.h"
@@ -13,5 +12,3 @@ Asteroid* AsteroidsArray(void);
 void ResetAsteroids(void);
 extern Asteroid _asteroids[ASTEROID_MAX];
 
-
-#endif

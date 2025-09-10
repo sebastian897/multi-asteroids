@@ -47,11 +47,11 @@ int main(void){
     ClientReceive();
     // printf("Client Received..\n");
     memcpy(&_playerId, buf, 1);
-    _players[_playerId].active = 1;
+    // _players[_playerId].active = 1;
     
-    memcpy(&_asteroids, buf+sizeof(unsigned char), sizeof(Asteroid)*ASTEROID_MAX);
-    memcpy(&_players, buf+sizeof(unsigned char)+sizeof(Asteroid)*ASTEROID_MAX, sizeof(Player)*PLAYERS_MAX);
-    memcpy(&_projectiles, buf+sizeof(unsigned char)+sizeof(Asteroid)*ASTEROID_MAX+sizeof(Player)*PLAYERS_MAX, sizeof(Projectile)*PROJECTILE_MAX);
+    memcpy(&_asteroids, buf+sizeof(_playerId), sizeof(Asteroid)*ASTEROID_MAX);
+    memcpy(&_players, buf+sizeof(_playerId)+sizeof(Asteroid)*ASTEROID_MAX, sizeof(Player)*PLAYERS_MAX);
+    memcpy(&_projectiles, buf+sizeof(_playerId)+sizeof(Asteroid)*ASTEROID_MAX+sizeof(Player)*PLAYERS_MAX, sizeof(Projectile)*PROJECTILE_MAX);
     
     bool thrust = IsKeyDown(KEY_UP);
     bool shooting = IsKeyDown(KEY_SPACE);

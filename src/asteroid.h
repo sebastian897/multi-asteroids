@@ -1,5 +1,4 @@
-#ifndef ASTEROID_H_
-#define ASTEROID_H_
+#pragma once
 
 #include "raylib.h"
 
@@ -35,5 +34,3 @@ Asteroid CreateAsteroid(Vector2 position, Vector2 velocity, AsteroidSize size);
 bool AsteroidUpdate(Asteroid* asteroid, float frametime, float time);
 void AsteroidDraw(Asteroid asteroid);
 float AsteroidRadius(Asteroid asteroid);
-
-#endif

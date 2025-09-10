@@ -1,5 +1,4 @@
-#ifndef PLAYER_H_
-#define PLAYER_H_
+#pragma once
 
 #include "raylib.h"
 
@@ -58,5 +57,3 @@ void PlayerMove(Player* player, bool thrust, signed char rotvel);
 void PlayerDraw(Player* player, Texture2D texture);
 Vector2 PlayerFacingDirection(Player player);
 void PlayerSetState(Player* player, PlayerState state);
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef CONSTANTS_H_
-#define CONSTANTS_H_
+#pragma once
 
 #define SCREEN_WIDTH 600 
 #define SCREEN_HEIGHT 600
@@ -17,5 +16,4 @@
 #define PROJECTILE_MAX 4
 
 #define SERVER "192.168.1.216"
-
-#endif
+#define BUFLEN 1024

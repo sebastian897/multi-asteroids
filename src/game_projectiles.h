@@ -1,5 +1,4 @@
-#ifndef GAME_PROJECTILES_H_
-#define GAME_PROJECTILES_H_
+#pragma once
 
 #include "projectile.h"
 #include "constants.h"
@@ -9,4 +8,3 @@ int UpdateProjectiles(void);
 void DrawProjectiles(void);
 void ResetProjectiles(void);
 extern Projectile _projectiles[PROJECTILE_MAX];
-#endif

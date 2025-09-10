@@ -1,3 +1,4 @@
+#pragma once
 #ifdef WIN32
 #include <Ws2tcpip.h>
 #include <winsock2.h>

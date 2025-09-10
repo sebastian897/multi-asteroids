@@ -1,5 +1,4 @@
-#ifndef GAME_PLAYER_H_
-#define GAME_PLAYER_H_
+#pragma once
 
 #include "player.h"
 #include "constants.h"
@@ -17,4 +16,4 @@ void ResetPlayers(void);
 extern Player _players[PLAYERS_MAX];
 extern PlayerInputs _inputs[PLAYERS_MAX];
 
-#endif
+

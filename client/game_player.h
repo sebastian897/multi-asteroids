@@ -1,5 +1,4 @@
-#ifndef GAME_PLAYER_H_
-#define GAME_PLAYER_H_
+#pragma once
 
 #include "player.h"
 #include "constants.h"
