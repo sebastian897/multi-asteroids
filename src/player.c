@@ -3,6 +3,7 @@
 #include "raymath.h"
 #include "debug.h"
 #include "constants.h"
+#include <stdio.h>
 
 #define PLAYER_ROT_SPEED 360
 #define PLAYER_SPEED 250
@@ -108,6 +109,9 @@ static void UpdateWrap(Player* player, float frametime)
 
 void PlayerMove(Player* player, bool thrust, signed char rotvel)
 {
+
+	printf("Server: inputs recieved: %d %d\n", thrust, rotvel);
+
 	float frametime = GetFrameTime();
 
 	if (player->state != PLAYER_STUNNED && player->state != PLAYER_DEAD)

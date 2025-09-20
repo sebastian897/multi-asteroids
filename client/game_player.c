@@ -65,9 +65,9 @@ void UpdatePlayers(void){
 
 		Asteroid* asteroids = _asteroids;
 
-		for (int i = 0; i < ASTEROID_MAX; i++)
+		for (int j = 0; j < ASTEROID_MAX; j++)
 		{
-			Asteroid* asteroid = asteroids + i;
+			Asteroid* asteroid = asteroids + j;
 
 			if (!asteroid->active)
 			{

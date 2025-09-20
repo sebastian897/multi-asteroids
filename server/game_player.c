@@ -50,7 +50,6 @@ void UpdatePlayers(void){
 		if (!_players[i].active){continue;}
 
 		TickState(&_players[i]);
-    	printf("Server: inputs recieved: %d %d %d %d\n", i, _inputs[i].thrust, _inputs[i].rotation, _inputs[i].shooting);
     	printf("Server: Player: vx=%f,vy=%f, \n", _players[i].velocity.x, _players[i].velocity.y);
 		PlayerMove(&_players[i], _inputs[i].thrust, _inputs[i].rotation);
 
@@ -77,9 +76,9 @@ void UpdatePlayers(void){
 
 		Asteroid* asteroids = _asteroids;
 
-		for (int i = 0; i < ASTEROID_MAX; i++)
+		for (int j = 0; j < ASTEROID_MAX; j++)
 		{
-			Asteroid* asteroid = asteroids + i;
+			Asteroid* asteroid = asteroids + j;
 
 			if (!asteroid->active)
 			{
