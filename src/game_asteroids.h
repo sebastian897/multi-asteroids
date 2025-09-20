@@ -8,7 +8,6 @@ void DestroyAsteroid(int index, float angle);
 Vector2 GetNextAsteroidPosition(void);
 int UpdateAsteroids(void);
 void DrawAsteroids(void);
-Asteroid* AsteroidsArray(void);
 void ResetAsteroids(void);
 extern Asteroid _asteroids[ASTEROID_MAX];
 

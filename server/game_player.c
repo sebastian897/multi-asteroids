@@ -45,45 +45,6 @@ void DrawPlayers(void)
 	}
 }
 
-static void TickState(Player* player)
-{
-	const float stunDuration = 0.2f;
-	const float iframeDuration = 0.8f;
-	const float playerDeathDelay = 0.8f;
-
-	switch (player->state)
-	{
-	case PLAYER_DEFAULT:
-		// no check
-		break;
-		
-	case PLAYER_STUNNED:
-		if ((GetTime() - player->timeStateEntered) > stunDuration)
-		{
-			PlayerSetState(player, PLAYER_IFRAME);
-		}
-		break;
-		
-	case PLAYER_IFRAME:
-		if ((GetTime() - player->timeStateEntered) > iframeDuration)
-		{
-			PlayerSetState(player, PLAYER_DEFAULT);
-		}
-		break;
-		
-	case PLAYER_DEAD:
-		if ((GetTime() - player->timeStateEntered) > playerDeathDelay)
-		{
-			// GameOver(); to do need new game over
-		}
-		break;
-
-	default:
-		TraceLog(LOG_ERROR, "PlayerState %d not handled!", (int)player->state);
-		break;
-	}
-}
-
 void UpdatePlayers(void){
 	for(int i = 0; i < PLAYERS_MAX; i++){
 		if (!_players[i].active){continue;}
@@ -114,10 +75,9 @@ void UpdatePlayers(void){
 			return;
 		}
 
-		Asteroid* asteroids = AsteroidsArray();
-		const int count = ASTEROID_MAX;
+		Asteroid* asteroids = _asteroids;
 
-		for (int i = 0; i < count; i++)
+		for (int i = 0; i < ASTEROID_MAX; i++)
 		{
 			Asteroid* asteroid = asteroids + i;
 

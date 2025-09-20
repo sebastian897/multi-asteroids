@@ -38,7 +38,7 @@ int UpdateProjectiles(void)
 	float frametime = GetFrameTime();
 	float time = GetTime();
 	
-	Asteroid* asteroids = AsteroidsArray();
+	Asteroid* asteroids = _asteroids;
 
 	int projectileCount = 0;
 	for (int i = 0; i < PROJECTILE_MAX; i++)

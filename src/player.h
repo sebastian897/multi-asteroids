@@ -59,3 +59,4 @@ void PlayerDraw(Player* player, Texture2D texture);
 Vector2 PlayerFacingDirection(Player player);
 void PlayerSetState(Player* player, PlayerState state);
 void OnCollision(Player* player, Asteroid* asteroid);
+void TickState(Player* player);

@@ -137,11 +137,6 @@ void DrawAsteroids(void)
 	}
 }
 
-Asteroid* AsteroidsArray(void)
-{
-	return _asteroids;
-}
-
 void ResetAsteroids(void)
 {
 	for (int i = 0; i < ASTEROID_MAX; i++)
